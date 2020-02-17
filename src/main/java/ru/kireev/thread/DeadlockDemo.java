@@ -1,16 +1,14 @@
 package ru.kireev.thread;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class DeadlockDemo {
-  private static final Logger logger = LoggerFactory.getLogger(DeadlockDemo.class);
-
   private final Resource r1 = new Resource("R1");
   private final Resource r2 = new Resource("R2");
 
@@ -31,7 +29,7 @@ public class DeadlockDemo {
 
     sleep();
     sleep();
-    logger.info("findDeadlockedThreads");
+    log.info("findDeadlockedThreads");
     long[] threads = ManagementFactory.getThreadMXBean().findDeadlockedThreads();
     if (threads != null) {
       ThreadInfo[] threadInfo = ManagementFactory.getThreadMXBean().getThreadInfo(threads);
@@ -41,12 +39,12 @@ public class DeadlockDemo {
 
 
   private static void action(Resource has, Resource need) {
-    logger.info("{} has: {}", Thread.currentThread().getName(), has);
+    log.info("{} has: {}", Thread.currentThread().getName(), has);
     synchronized (has) {
       sleep();
-      logger.info("{} taking: {}", Thread.currentThread().getName(), need);
+      log.info("{} taking: {}", Thread.currentThread().getName(), need);
       synchronized (need) {
-        logger.info("taken by {}", Thread.currentThread().getName());
+        log.info("taken by {}", Thread.currentThread().getName());
       }
     }
   }

@@ -1,38 +1,37 @@
 package ru.kireev.thread;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class ThreadMethodDemo {
-  private static final Logger logger = LoggerFactory.getLogger(ThreadMethodDemo.class);
 
   public static void main(String[] args) throws InterruptedException {
-    logger.info("starting");
+    log.info("starting");
 
     Thread thread = new Thread(
         () -> {
           boolean stop = false;
           while (!stop) {
-            logger.info("I am: {} state: {}", Thread.currentThread().getName(), Thread.currentThread().getState());
+            log.info("I am: {} state: {}", Thread.currentThread().getName(), Thread.currentThread().getState());
             stop = sleepAndStop();
-            Thread.onSpinWait(); // "новая фича"
+            //Thread.onSpinWait(); // "новая фича"
           }
         });
     thread.setName("Named-thread");
     thread.setDaemon(false);
-    logger.info("state: {}", thread.getState());
+    log.info("state: {}", thread.getState());
 
     thread.start();
 
     sleep();
-    logger.info("interrupting");
+    log.info("interrupting");
     thread.interrupt();
 
     thread.join();
 
-    logger.info("finished");
+    log.info("finished");
   }
 
   private static boolean sleepAndStop() {
@@ -40,7 +39,7 @@ public class ThreadMethodDemo {
       Thread.sleep(TimeUnit.SECONDS.toMillis(1));
       return false;
     } catch (InterruptedException e) {
-      logger.info("somebody is trying to stop us, Ok");
+      log.info("somebody is trying to stop us, Ok");
       Thread.currentThread().interrupt();
       return true;
     }

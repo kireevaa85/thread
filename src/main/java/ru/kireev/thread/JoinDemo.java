@@ -1,12 +1,11 @@
 package ru.kireev.thread;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@Slf4j
 public class JoinDemo {
-  private static final Logger logger = LoggerFactory.getLogger(JoinDemo.class);
 
   public static void main(String[] args) throws InterruptedException {
    // freeRun();
@@ -19,7 +18,7 @@ public class JoinDemo {
   }
 
   private static void freeRun() throws InterruptedException {
-    logger.info("starting");
+    log.info("starting");
 
     Thread t1 = createThread("t1");
     Thread t2 = createThread("t2");
@@ -43,11 +42,11 @@ public class JoinDemo {
     t9.start();
     t10.start();
 
-    logger.info("finished");
+    log.info("finished");
   }
 
   private static void orderedRun() throws InterruptedException {
-    logger.info("starting");
+    log.info("starting");
 
     Thread t1 = createThread("t1");
     Thread t2 = createThread("t2");
@@ -82,7 +81,7 @@ public class JoinDemo {
     t10.join();
 
 
-    logger.info("finished");
+    log.info("finished");
   }
 
 
@@ -92,6 +91,6 @@ public class JoinDemo {
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
-    logger.info(str);
+    log.info(str);
   }
 }
